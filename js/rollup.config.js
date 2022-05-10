@@ -1,42 +1,42 @@
-import commonjs from "@rollup/plugin-commonjs";
-import nodeResolve from "@rollup/plugin-node-resolve";
-import dts from "rollup-plugin-dts";
-import builtins from "rollup-plugin-node-builtins";
-import globals from "rollup-plugin-node-globals";
-import typescript from "rollup-plugin-typescript2";
+import commonjs from '@rollup/plugin-commonjs'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import dts from 'rollup-plugin-dts'
+import builtins from 'rollup-plugin-node-builtins'
+import globals from 'rollup-plugin-node-globals'
+import typescript from 'rollup-plugin-typescript2'
 
-import pkg from "./package.json";
+import pkg from './package.json'
 
 export default [
   {
-    input: "src/index.ts",
+    input: 'src/index.ts',
     output: [
       {
         file: pkg.main,
-        format: "cjs",
+        format: 'cjs'
       },
       {
         file: pkg.module,
-        format: "es",
-      },
+        format: 'es'
+      }
     ],
     plugins: [
       typescript({
-        typescript: require("typescript"),
+        typescript: require('typescript')
       }),
       commonjs({
-        include: /\/node_modules\//,
+        include: /\/node_modules\//
       }),
       nodeResolve({
-        browser: true,
+        browser: true
       }),
       globals(),
-      builtins(),
-    ],
+      builtins()
+    ]
   },
   {
-    input: "./src/index.ts",
-    output: [{ file: "dist/index.d.ts", format: "es" }],
-    plugins: [dts()],
-  },
-];
+    input: './src/index.ts',
+    output: [{ file: 'dist/index.d.ts', format: 'es' }],
+    plugins: [dts()]
+  }
+]
