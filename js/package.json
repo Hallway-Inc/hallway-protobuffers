@@ -1,5 +1,5 @@
 {
-  "name": "@quarkworks-inc/hallway-protobuffer",
+  "name": "@quarkworks-inc/hallway-protobuffers",
   "version": "0.0.3",
   "description": "Hallway Protobuffer for Typescript",
   "license": "SEE LICENSE IN LICENSE.md",
