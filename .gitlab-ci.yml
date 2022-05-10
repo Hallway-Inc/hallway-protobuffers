@@ -77,7 +77,6 @@ Deploy:
   script:
     - cd js
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
-    - npm run obfuscate
     - npm publish --access public
   cache:
     - <<: *node_modules-cache
