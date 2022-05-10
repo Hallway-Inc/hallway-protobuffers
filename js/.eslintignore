@@ -1,0 +1,15 @@
+# dirs
+build
+coverage
+dist
+keys
+node_modules
+
+# files
+jest.config.js
+package.json
+package-lock.json
+rollup.config.js
+
+# demo
+demo

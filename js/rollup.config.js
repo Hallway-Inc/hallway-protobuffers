@@ -25,10 +25,10 @@ export default [
         typescript: require("typescript"),
       }),
       commonjs({
-        include: /\/node_modules\//
+        include: /\/node_modules\//,
       }),
       nodeResolve({
-        browser: true
+        browser: true,
       }),
       globals(),
       builtins(),
