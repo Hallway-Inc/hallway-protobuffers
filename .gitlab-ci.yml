@@ -57,7 +57,7 @@ Build:
     - <<: *build-cache
   artifacts:
     paths:
-      - dist
+      - js/dist
 
 Lint:
   needs: ["Build"] 
@@ -83,5 +83,5 @@ Deploy:
     - <<: *build-cache
   artifacts:
     paths:
-      - dist
+      - js/dist
 
