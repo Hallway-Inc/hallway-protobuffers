@@ -36,9 +36,6 @@ stages:
     - dist
   policy: pull-push
 
-.js-dir: &js-dir
-  
-
 Install Dependencies:
   stage: install_deps
   script:
