@@ -1,1 +1,1 @@
-export { AvatarPredictionMessage } from "./avatar-message";
+export * from "./avatar-message";
