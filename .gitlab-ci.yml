@@ -1,0 +1,91 @@
+# .gitlab-ci.yml
+default:
+  image: node:lts-alpine
+
+variables:
+  FF_USE_FASTZIP: 'true'
+  # These can be specified per job or per pipeline
+  ARTIFACT_COMPRESSION_LEVEL: 'fast'
+  CACHE_COMPRESSION_LEVEL: 'fast'
+
+stages:
+  - install_deps
+  - build
+  - test
+  - build_demo
+  - deploy
+
+# Caches
+.node_modules-cache: &node_modules-cache
+  key:
+    files:
+      - js/yarn.lock
+  paths:
+    - js/node_modules
+  policy: pull
+
+.yarn-cache: &yarn-cache
+  key: yarn-$CI_JOB_IMAGE
+  paths:
+    - .yarn
+
+.build-cache: &build-cache
+  key: build-$CI_JOB_IMAGE
+  paths:
+    - .cache
+    - dist
+  policy: pull-push
+
+.js-dir: &js-dir
+  
+
+Install Dependencies:
+  stage: install_deps
+  script:
+    - cd js
+    - yarn install --cache-folder .yarn
+  cache:
+    - <<: *node_modules-cache
+      policy: pull-push # We override the policy
+    - <<: *yarn-cache # This is not required if your internet speed is good or if you use a local npm registry.
+
+Build:
+  needs: ["Install Dependencies"]
+  stage: build
+  script:
+    - cd js
+    - yarn build
+  cache:
+    - <<: *node_modules-cache
+    - <<: *build-cache
+  artifacts:
+    paths:
+      - dist
+
+Lint:
+  needs: ["Build"] 
+  stage: test
+  script:
+    - cd js
+    - yarn lint
+    - yarn format:check
+  cache:
+    - <<: *node_modules-cache
+
+
+Deploy:
+  stage: deploy
+  only:
+    - tags
+  script:
+    - cd js
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - npm run obfuscate
+    - npm publish --access public
+  cache:
+    - <<: *node_modules-cache
+    - <<: *build-cache
+  artifacts:
+    paths:
+      - dist
+
