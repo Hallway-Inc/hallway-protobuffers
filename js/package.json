@@ -12,11 +12,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+ssh://git@github.com:Hallway-Inc/hallway-protobuffers.git"
   },
   "author": "",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Hallway-Inc/hallway-protobuffers/issues"
   },
   "homepage": "https://github.com/Hallway-Inc/AvatarWebKit#-joinhallwaycom",
   "scripts": {
