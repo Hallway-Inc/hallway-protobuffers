@@ -1,0 +1,20 @@
+# https://rules-proto-grpc.com/en/latest/lang/cpp.html#cpp-proto-compile
+
+package(default_visibility = ["//visibility:public"])
+load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
+load("@rules_proto_grpc//csharp:defs.bzl", "csharp_proto_compile")
+
+cpp_proto_library(
+    name = "avatar_message_proto",
+    protos = [":avatar_message"]
+)
+
+csharp_proto_compile(
+    name = "avatar_message_csharp_proto",
+    protos = [":avatar_message"]
+)
+
+proto_library(
+    name = "avatar_message",
+    srcs = ["../avatar-message.proto"]
+)
