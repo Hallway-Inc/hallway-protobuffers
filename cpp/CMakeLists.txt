@@ -1,4 +1,4 @@
-set(LIB_NAME avatarmessage)
+set(LIB_NAME AvatarMessageLib)
 
 # ##############################################################################
 # Protobuf
@@ -24,9 +24,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(protobuf)
 
-add_library(${LIB_NAME} STATIC avatar_message.pb.cc avatar_message.pb.h)
+add_library(${LIB_NAME} STATIC  src/AvatarMessageUtils.cpp include/AvatarMessageUtils.h
+                                avatar_message.pb.cc avatar_message.pb.h)
 
-target_include_directories(${LIB_NAME} PUBLIC ${protobuf_SOURCE_DIR}/src)
+target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${protobuf_SOURCE_DIR}/src)
 
 target_link_libraries(${LIB_NAME} libprotobuf )
 

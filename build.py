@@ -20,8 +20,8 @@ if not buildExitCode == 0:
 
 # Copy mediapipe built pb.h and pb.cc files to build/ 
 cppPath = "cpp"
-shutil.copyfile('bazel-bin/avatar_message_proto_cc_pb/avatar_message.pb.h', f'{cppPath}/avatar_message.pb.h')
-shutil.copyfile('bazel-bin/avatar_message_proto_cc_pb/avatar_message.pb.cc', f'{cppPath}/avatar_message.pb.cc')
+shutil.copyfile('bazel-bin/avatar_message_proto_cc_pb/avatar_message.pb.h', f'{cppPath}/include/avatar_message.pb.h')
+shutil.copyfile('bazel-bin/avatar_message_proto_cc_pb/avatar_message.pb.cc', f'{cppPath}/src/avatar_message.pb.cc')
 
 # Build the c-sharp protobuf
 buildExitCode = os.system("bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1 --action_env PYTHON_BIN_PATH=\"%s\" avatar_message_proto_cs" % pythonBinPath)
