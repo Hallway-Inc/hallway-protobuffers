@@ -25,7 +25,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(protobuf)
 
 add_library(${LIB_NAME} STATIC  src/AvatarMessageUtils.cpp include/AvatarMessageUtils.h
-                                avatar_message.pb.cc avatar_message.pb.h)
+                                src/avatar_message.pb.cc include/avatar_message.pb.h)
 
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${protobuf_SOURCE_DIR}/src)
 
