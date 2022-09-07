@@ -1,1 +1,1 @@
-export { AvatarPredictionMessage } from './avatar_message'
+export { HallwayAvatarPrediction } from './hallway_avatar_message'

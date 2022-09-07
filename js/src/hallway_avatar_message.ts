@@ -6,88 +6,94 @@ export const protobufPackage = "";
 
 /** avatar.proto */
 
-export interface AvatarPredictionMessage {
+export interface HallwayAvatarPrediction {
   blendShapes: BlendShapes | undefined;
   rotation: Rotation | undefined;
-  transform: Transform | undefined;
+  translation: Translation | undefined;
 }
 
 export interface BlendShapes {
-  /** Alphabetical */
+  /** in osc streaming order https://www.bannaflak.com/face-cap/livemode.html#2.2 */
+  browInnerUp: number;
   browDown_L: number;
   browDown_R: number;
-  browInnerUp: number;
   browOuterUp_L: number;
   browOuterUp_R: number;
-  cheekSquint_L: number;
-  cheekSquint_R: number;
-  eyeBlink_L: number;
-  eyeBlink_R: number;
+  eyeLookUp_L: number;
+  eyeLookUp_R: number;
   eyeLookDown_L: number;
   eyeLookDown_R: number;
   eyeLookIn_L: number;
   eyeLookIn_R: number;
   eyeLookOut_L: number;
   eyeLookOut_R: number;
-  eyeLookUp_L: number;
-  eyeLookUp_R: number;
+  eyeBlink_L: number;
+  eyeBlink_R: number;
   eyeSquint_L: number;
   eyeSquint_R: number;
   eyeWide_L: number;
   eyeWide_R: number;
-  jawLeft: number;
+  cheekPuff: number;
+  cheekSquint_L: number;
+  cheekSquint_R: number;
+  noseSneer_L: number;
+  noseSneer_R: number;
   jawOpen: number;
+  jawForward: number;
+  jawLeft: number;
   jawRight: number;
+  mouthFunnel: number;
+  mouthPucker: number;
+  mouthLeft: number;
+  mouthRight: number;
+  mouthRollUpper: number;
+  mouthRollLower: number;
+  mouthShrugUpper: number;
+  mouthShrugLower: number;
   mouthClose: number;
-  mouthDimple_L: number;
-  mouthDimple_R: number;
+  mouthSmile_L: number;
+  mouthSmile_R: number;
   mouthFrown_L: number;
   mouthFrown_R: number;
-  mouthFunnel: number;
-  mouthLeft: number;
+  mouthDimple_L: number;
+  mouthDimple_R: number;
+  mouthUpperUp_L: number;
+  mouthUpperUp_R: number;
   mouthLowerDown_L: number;
   mouthLowerDown_R: number;
   mouthPress_L: number;
   mouthPress_R: number;
-  mouthPucker: number;
-  mouthRight: number;
-  mouthRollLower: number;
-  mouthRollUpper: number;
-  mouthShrugLower: number;
-  mouthShrugUpper: number;
-  mouthSmile_L: number;
-  mouthSmile_R: number;
   mouthStretch_L: number;
   mouthStretch_R: number;
-  mouthUpperUp_L: number;
-  mouthUpperUp_R: number;
-  noseSneer_L: number;
-  noseSneer_R: number;
-  /** These are not given by our models yet, so we will always set their value to 0 for now. */
-  cheekPuff: number;
-  jawForward: number;
   tongueOut: number;
 }
 
 export interface Rotation {
+  /** x */
   pitch?: number | undefined;
-  roll?: number | undefined;
+  /** y */
   yaw?: number | undefined;
+  /** z */
+  roll?: number | undefined;
 }
 
-export interface Transform {
+export interface Translation {
   x?: number | undefined;
   y?: number | undefined;
   z?: number | undefined;
 }
 
-function createBaseAvatarPredictionMessage(): AvatarPredictionMessage {
-  return { blendShapes: undefined, rotation: undefined, transform: undefined };
+function createBaseHallwayAvatarPrediction(): HallwayAvatarPrediction {
+  return {
+    blendShapes: undefined,
+    rotation: undefined,
+    translation: undefined,
+  };
 }
 
-export const AvatarPredictionMessage = {
+export const HallwayAvatarPrediction = {
   encode(
-    message: AvatarPredictionMessage,
+    message: HallwayAvatarPrediction,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.blendShapes !== undefined) {
@@ -99,8 +105,11 @@ export const AvatarPredictionMessage = {
     if (message.rotation !== undefined) {
       Rotation.encode(message.rotation, writer.uint32(18).fork()).ldelim();
     }
-    if (message.transform !== undefined) {
-      Transform.encode(message.transform, writer.uint32(26).fork()).ldelim();
+    if (message.translation !== undefined) {
+      Translation.encode(
+        message.translation,
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -108,10 +117,10 @@ export const AvatarPredictionMessage = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): AvatarPredictionMessage {
+  ): HallwayAvatarPrediction {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAvatarPredictionMessage();
+    const message = createBaseHallwayAvatarPrediction();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -122,7 +131,7 @@ export const AvatarPredictionMessage = {
           message.rotation = Rotation.decode(reader, reader.uint32());
           break;
         case 3:
-          message.transform = Transform.decode(reader, reader.uint32());
+          message.translation = Translation.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -132,7 +141,7 @@ export const AvatarPredictionMessage = {
     return message;
   },
 
-  fromJSON(object: any): AvatarPredictionMessage {
+  fromJSON(object: any): HallwayAvatarPrediction {
     return {
       blendShapes: isSet(object.blendShapes)
         ? BlendShapes.fromJSON(object.blendShapes)
@@ -140,13 +149,13 @@ export const AvatarPredictionMessage = {
       rotation: isSet(object.rotation)
         ? Rotation.fromJSON(object.rotation)
         : undefined,
-      transform: isSet(object.transform)
-        ? Transform.fromJSON(object.transform)
+      translation: isSet(object.translation)
+        ? Translation.fromJSON(object.translation)
         : undefined,
     };
   },
 
-  toJSON(message: AvatarPredictionMessage): unknown {
+  toJSON(message: HallwayAvatarPrediction): unknown {
     const obj: any = {};
     message.blendShapes !== undefined &&
       (obj.blendShapes = message.blendShapes
@@ -156,17 +165,17 @@ export const AvatarPredictionMessage = {
       (obj.rotation = message.rotation
         ? Rotation.toJSON(message.rotation)
         : undefined);
-    message.transform !== undefined &&
-      (obj.transform = message.transform
-        ? Transform.toJSON(message.transform)
+    message.translation !== undefined &&
+      (obj.translation = message.translation
+        ? Translation.toJSON(message.translation)
         : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<AvatarPredictionMessage>, I>>(
+  fromPartial<I extends Exact<DeepPartial<HallwayAvatarPrediction>, I>>(
     object: I
-  ): AvatarPredictionMessage {
-    const message = createBaseAvatarPredictionMessage();
+  ): HallwayAvatarPrediction {
+    const message = createBaseHallwayAvatarPrediction();
     message.blendShapes =
       object.blendShapes !== undefined && object.blendShapes !== null
         ? BlendShapes.fromPartial(object.blendShapes)
@@ -175,9 +184,9 @@ export const AvatarPredictionMessage = {
       object.rotation !== undefined && object.rotation !== null
         ? Rotation.fromPartial(object.rotation)
         : undefined;
-    message.transform =
-      object.transform !== undefined && object.transform !== null
-        ? Transform.fromPartial(object.transform)
+    message.translation =
+      object.translation !== undefined && object.translation !== null
+        ? Translation.fromPartial(object.translation)
         : undefined;
     return message;
   },
@@ -185,57 +194,57 @@ export const AvatarPredictionMessage = {
 
 function createBaseBlendShapes(): BlendShapes {
   return {
+    browInnerUp: 0,
     browDown_L: 0,
     browDown_R: 0,
-    browInnerUp: 0,
     browOuterUp_L: 0,
     browOuterUp_R: 0,
-    cheekSquint_L: 0,
-    cheekSquint_R: 0,
-    eyeBlink_L: 0,
-    eyeBlink_R: 0,
+    eyeLookUp_L: 0,
+    eyeLookUp_R: 0,
     eyeLookDown_L: 0,
     eyeLookDown_R: 0,
     eyeLookIn_L: 0,
     eyeLookIn_R: 0,
     eyeLookOut_L: 0,
     eyeLookOut_R: 0,
-    eyeLookUp_L: 0,
-    eyeLookUp_R: 0,
+    eyeBlink_L: 0,
+    eyeBlink_R: 0,
     eyeSquint_L: 0,
     eyeSquint_R: 0,
     eyeWide_L: 0,
     eyeWide_R: 0,
-    jawLeft: 0,
+    cheekPuff: 0,
+    cheekSquint_L: 0,
+    cheekSquint_R: 0,
+    noseSneer_L: 0,
+    noseSneer_R: 0,
     jawOpen: 0,
+    jawForward: 0,
+    jawLeft: 0,
     jawRight: 0,
+    mouthFunnel: 0,
+    mouthPucker: 0,
+    mouthLeft: 0,
+    mouthRight: 0,
+    mouthRollUpper: 0,
+    mouthRollLower: 0,
+    mouthShrugUpper: 0,
+    mouthShrugLower: 0,
     mouthClose: 0,
-    mouthDimple_L: 0,
-    mouthDimple_R: 0,
+    mouthSmile_L: 0,
+    mouthSmile_R: 0,
     mouthFrown_L: 0,
     mouthFrown_R: 0,
-    mouthFunnel: 0,
-    mouthLeft: 0,
+    mouthDimple_L: 0,
+    mouthDimple_R: 0,
+    mouthUpperUp_L: 0,
+    mouthUpperUp_R: 0,
     mouthLowerDown_L: 0,
     mouthLowerDown_R: 0,
     mouthPress_L: 0,
     mouthPress_R: 0,
-    mouthPucker: 0,
-    mouthRight: 0,
-    mouthRollLower: 0,
-    mouthRollUpper: 0,
-    mouthShrugLower: 0,
-    mouthShrugUpper: 0,
-    mouthSmile_L: 0,
-    mouthSmile_R: 0,
     mouthStretch_L: 0,
     mouthStretch_R: 0,
-    mouthUpperUp_L: 0,
-    mouthUpperUp_R: 0,
-    noseSneer_L: 0,
-    noseSneer_R: 0,
-    cheekPuff: 0,
-    jawForward: 0,
     tongueOut: 0,
   };
 }
@@ -245,14 +254,14 @@ export const BlendShapes = {
     message: BlendShapes,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
+    if (message.browInnerUp !== 0) {
+      writer.uint32(13).float(message.browInnerUp);
+    }
     if (message.browDown_L !== 0) {
-      writer.uint32(13).float(message.browDown_L);
+      writer.uint32(21).float(message.browDown_L);
     }
     if (message.browDown_R !== 0) {
-      writer.uint32(21).float(message.browDown_R);
-    }
-    if (message.browInnerUp !== 0) {
-      writer.uint32(29).float(message.browInnerUp);
+      writer.uint32(29).float(message.browDown_R);
     }
     if (message.browOuterUp_L !== 0) {
       writer.uint32(37).float(message.browOuterUp_L);
@@ -260,143 +269,143 @@ export const BlendShapes = {
     if (message.browOuterUp_R !== 0) {
       writer.uint32(45).float(message.browOuterUp_R);
     }
-    if (message.cheekSquint_L !== 0) {
-      writer.uint32(53).float(message.cheekSquint_L);
-    }
-    if (message.cheekSquint_R !== 0) {
-      writer.uint32(61).float(message.cheekSquint_R);
-    }
-    if (message.eyeBlink_L !== 0) {
-      writer.uint32(69).float(message.eyeBlink_L);
-    }
-    if (message.eyeBlink_R !== 0) {
-      writer.uint32(77).float(message.eyeBlink_R);
-    }
-    if (message.eyeLookDown_L !== 0) {
-      writer.uint32(85).float(message.eyeLookDown_L);
-    }
-    if (message.eyeLookDown_R !== 0) {
-      writer.uint32(93).float(message.eyeLookDown_R);
-    }
-    if (message.eyeLookIn_L !== 0) {
-      writer.uint32(101).float(message.eyeLookIn_L);
-    }
-    if (message.eyeLookIn_R !== 0) {
-      writer.uint32(109).float(message.eyeLookIn_R);
-    }
-    if (message.eyeLookOut_L !== 0) {
-      writer.uint32(117).float(message.eyeLookOut_L);
-    }
-    if (message.eyeLookOut_R !== 0) {
-      writer.uint32(125).float(message.eyeLookOut_R);
-    }
     if (message.eyeLookUp_L !== 0) {
-      writer.uint32(133).float(message.eyeLookUp_L);
+      writer.uint32(53).float(message.eyeLookUp_L);
     }
     if (message.eyeLookUp_R !== 0) {
-      writer.uint32(141).float(message.eyeLookUp_R);
+      writer.uint32(61).float(message.eyeLookUp_R);
+    }
+    if (message.eyeLookDown_L !== 0) {
+      writer.uint32(69).float(message.eyeLookDown_L);
+    }
+    if (message.eyeLookDown_R !== 0) {
+      writer.uint32(77).float(message.eyeLookDown_R);
+    }
+    if (message.eyeLookIn_L !== 0) {
+      writer.uint32(85).float(message.eyeLookIn_L);
+    }
+    if (message.eyeLookIn_R !== 0) {
+      writer.uint32(93).float(message.eyeLookIn_R);
+    }
+    if (message.eyeLookOut_L !== 0) {
+      writer.uint32(101).float(message.eyeLookOut_L);
+    }
+    if (message.eyeLookOut_R !== 0) {
+      writer.uint32(109).float(message.eyeLookOut_R);
+    }
+    if (message.eyeBlink_L !== 0) {
+      writer.uint32(117).float(message.eyeBlink_L);
+    }
+    if (message.eyeBlink_R !== 0) {
+      writer.uint32(125).float(message.eyeBlink_R);
     }
     if (message.eyeSquint_L !== 0) {
-      writer.uint32(149).float(message.eyeSquint_L);
+      writer.uint32(133).float(message.eyeSquint_L);
     }
     if (message.eyeSquint_R !== 0) {
-      writer.uint32(157).float(message.eyeSquint_R);
+      writer.uint32(141).float(message.eyeSquint_R);
     }
     if (message.eyeWide_L !== 0) {
-      writer.uint32(165).float(message.eyeWide_L);
+      writer.uint32(149).float(message.eyeWide_L);
     }
     if (message.eyeWide_R !== 0) {
-      writer.uint32(173).float(message.eyeWide_R);
+      writer.uint32(157).float(message.eyeWide_R);
     }
-    if (message.jawLeft !== 0) {
-      writer.uint32(181).float(message.jawLeft);
+    if (message.cheekPuff !== 0) {
+      writer.uint32(165).float(message.cheekPuff);
+    }
+    if (message.cheekSquint_L !== 0) {
+      writer.uint32(173).float(message.cheekSquint_L);
+    }
+    if (message.cheekSquint_R !== 0) {
+      writer.uint32(181).float(message.cheekSquint_R);
+    }
+    if (message.noseSneer_L !== 0) {
+      writer.uint32(189).float(message.noseSneer_L);
+    }
+    if (message.noseSneer_R !== 0) {
+      writer.uint32(197).float(message.noseSneer_R);
     }
     if (message.jawOpen !== 0) {
-      writer.uint32(189).float(message.jawOpen);
+      writer.uint32(205).float(message.jawOpen);
+    }
+    if (message.jawForward !== 0) {
+      writer.uint32(213).float(message.jawForward);
+    }
+    if (message.jawLeft !== 0) {
+      writer.uint32(221).float(message.jawLeft);
     }
     if (message.jawRight !== 0) {
-      writer.uint32(197).float(message.jawRight);
-    }
-    if (message.mouthClose !== 0) {
-      writer.uint32(205).float(message.mouthClose);
-    }
-    if (message.mouthDimple_L !== 0) {
-      writer.uint32(213).float(message.mouthDimple_L);
-    }
-    if (message.mouthDimple_R !== 0) {
-      writer.uint32(221).float(message.mouthDimple_R);
-    }
-    if (message.mouthFrown_L !== 0) {
-      writer.uint32(229).float(message.mouthFrown_L);
-    }
-    if (message.mouthFrown_R !== 0) {
-      writer.uint32(237).float(message.mouthFrown_R);
+      writer.uint32(229).float(message.jawRight);
     }
     if (message.mouthFunnel !== 0) {
-      writer.uint32(245).float(message.mouthFunnel);
+      writer.uint32(237).float(message.mouthFunnel);
+    }
+    if (message.mouthPucker !== 0) {
+      writer.uint32(245).float(message.mouthPucker);
     }
     if (message.mouthLeft !== 0) {
       writer.uint32(253).float(message.mouthLeft);
     }
-    if (message.mouthLowerDown_L !== 0) {
-      writer.uint32(261).float(message.mouthLowerDown_L);
-    }
-    if (message.mouthLowerDown_R !== 0) {
-      writer.uint32(269).float(message.mouthLowerDown_R);
-    }
-    if (message.mouthPress_L !== 0) {
-      writer.uint32(277).float(message.mouthPress_L);
-    }
-    if (message.mouthPress_R !== 0) {
-      writer.uint32(285).float(message.mouthPress_R);
-    }
-    if (message.mouthPucker !== 0) {
-      writer.uint32(293).float(message.mouthPucker);
-    }
     if (message.mouthRight !== 0) {
-      writer.uint32(301).float(message.mouthRight);
-    }
-    if (message.mouthRollLower !== 0) {
-      writer.uint32(309).float(message.mouthRollLower);
+      writer.uint32(261).float(message.mouthRight);
     }
     if (message.mouthRollUpper !== 0) {
-      writer.uint32(317).float(message.mouthRollUpper);
+      writer.uint32(269).float(message.mouthRollUpper);
     }
-    if (message.mouthShrugLower !== 0) {
-      writer.uint32(325).float(message.mouthShrugLower);
+    if (message.mouthRollLower !== 0) {
+      writer.uint32(277).float(message.mouthRollLower);
     }
     if (message.mouthShrugUpper !== 0) {
-      writer.uint32(333).float(message.mouthShrugUpper);
+      writer.uint32(285).float(message.mouthShrugUpper);
+    }
+    if (message.mouthShrugLower !== 0) {
+      writer.uint32(293).float(message.mouthShrugLower);
+    }
+    if (message.mouthClose !== 0) {
+      writer.uint32(301).float(message.mouthClose);
     }
     if (message.mouthSmile_L !== 0) {
-      writer.uint32(341).float(message.mouthSmile_L);
+      writer.uint32(309).float(message.mouthSmile_L);
     }
     if (message.mouthSmile_R !== 0) {
-      writer.uint32(349).float(message.mouthSmile_R);
+      writer.uint32(317).float(message.mouthSmile_R);
     }
-    if (message.mouthStretch_L !== 0) {
-      writer.uint32(357).float(message.mouthStretch_L);
+    if (message.mouthFrown_L !== 0) {
+      writer.uint32(325).float(message.mouthFrown_L);
     }
-    if (message.mouthStretch_R !== 0) {
-      writer.uint32(365).float(message.mouthStretch_R);
+    if (message.mouthFrown_R !== 0) {
+      writer.uint32(333).float(message.mouthFrown_R);
+    }
+    if (message.mouthDimple_L !== 0) {
+      writer.uint32(341).float(message.mouthDimple_L);
+    }
+    if (message.mouthDimple_R !== 0) {
+      writer.uint32(349).float(message.mouthDimple_R);
     }
     if (message.mouthUpperUp_L !== 0) {
-      writer.uint32(373).float(message.mouthUpperUp_L);
+      writer.uint32(357).float(message.mouthUpperUp_L);
     }
     if (message.mouthUpperUp_R !== 0) {
-      writer.uint32(381).float(message.mouthUpperUp_R);
+      writer.uint32(365).float(message.mouthUpperUp_R);
     }
-    if (message.noseSneer_L !== 0) {
-      writer.uint32(389).float(message.noseSneer_L);
+    if (message.mouthLowerDown_L !== 0) {
+      writer.uint32(373).float(message.mouthLowerDown_L);
     }
-    if (message.noseSneer_R !== 0) {
-      writer.uint32(397).float(message.noseSneer_R);
+    if (message.mouthLowerDown_R !== 0) {
+      writer.uint32(381).float(message.mouthLowerDown_R);
     }
-    if (message.cheekPuff !== 0) {
-      writer.uint32(405).float(message.cheekPuff);
+    if (message.mouthPress_L !== 0) {
+      writer.uint32(389).float(message.mouthPress_L);
     }
-    if (message.jawForward !== 0) {
-      writer.uint32(413).float(message.jawForward);
+    if (message.mouthPress_R !== 0) {
+      writer.uint32(397).float(message.mouthPress_R);
+    }
+    if (message.mouthStretch_L !== 0) {
+      writer.uint32(405).float(message.mouthStretch_L);
+    }
+    if (message.mouthStretch_R !== 0) {
+      writer.uint32(413).float(message.mouthStretch_R);
     }
     if (message.tongueOut !== 0) {
       writer.uint32(421).float(message.tongueOut);
@@ -412,13 +421,13 @@ export const BlendShapes = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.browDown_L = reader.float();
+          message.browInnerUp = reader.float();
           break;
         case 2:
-          message.browDown_R = reader.float();
+          message.browDown_L = reader.float();
           break;
         case 3:
-          message.browInnerUp = reader.float();
+          message.browDown_R = reader.float();
           break;
         case 4:
           message.browOuterUp_L = reader.float();
@@ -427,142 +436,142 @@ export const BlendShapes = {
           message.browOuterUp_R = reader.float();
           break;
         case 6:
-          message.cheekSquint_L = reader.float();
-          break;
-        case 7:
-          message.cheekSquint_R = reader.float();
-          break;
-        case 8:
-          message.eyeBlink_L = reader.float();
-          break;
-        case 9:
-          message.eyeBlink_R = reader.float();
-          break;
-        case 10:
-          message.eyeLookDown_L = reader.float();
-          break;
-        case 11:
-          message.eyeLookDown_R = reader.float();
-          break;
-        case 12:
-          message.eyeLookIn_L = reader.float();
-          break;
-        case 13:
-          message.eyeLookIn_R = reader.float();
-          break;
-        case 14:
-          message.eyeLookOut_L = reader.float();
-          break;
-        case 15:
-          message.eyeLookOut_R = reader.float();
-          break;
-        case 16:
           message.eyeLookUp_L = reader.float();
           break;
-        case 17:
+        case 7:
           message.eyeLookUp_R = reader.float();
           break;
-        case 18:
+        case 8:
+          message.eyeLookDown_L = reader.float();
+          break;
+        case 9:
+          message.eyeLookDown_R = reader.float();
+          break;
+        case 10:
+          message.eyeLookIn_L = reader.float();
+          break;
+        case 11:
+          message.eyeLookIn_R = reader.float();
+          break;
+        case 12:
+          message.eyeLookOut_L = reader.float();
+          break;
+        case 13:
+          message.eyeLookOut_R = reader.float();
+          break;
+        case 14:
+          message.eyeBlink_L = reader.float();
+          break;
+        case 15:
+          message.eyeBlink_R = reader.float();
+          break;
+        case 16:
           message.eyeSquint_L = reader.float();
           break;
-        case 19:
+        case 17:
           message.eyeSquint_R = reader.float();
           break;
-        case 20:
+        case 18:
           message.eyeWide_L = reader.float();
           break;
-        case 21:
+        case 19:
           message.eyeWide_R = reader.float();
           break;
+        case 20:
+          message.cheekPuff = reader.float();
+          break;
+        case 21:
+          message.cheekSquint_L = reader.float();
+          break;
         case 22:
-          message.jawLeft = reader.float();
+          message.cheekSquint_R = reader.float();
           break;
         case 23:
-          message.jawOpen = reader.float();
+          message.noseSneer_L = reader.float();
           break;
         case 24:
-          message.jawRight = reader.float();
+          message.noseSneer_R = reader.float();
           break;
         case 25:
-          message.mouthClose = reader.float();
+          message.jawOpen = reader.float();
           break;
         case 26:
-          message.mouthDimple_L = reader.float();
+          message.jawForward = reader.float();
           break;
         case 27:
-          message.mouthDimple_R = reader.float();
+          message.jawLeft = reader.float();
           break;
         case 28:
-          message.mouthFrown_L = reader.float();
+          message.jawRight = reader.float();
           break;
         case 29:
-          message.mouthFrown_R = reader.float();
+          message.mouthFunnel = reader.float();
           break;
         case 30:
-          message.mouthFunnel = reader.float();
+          message.mouthPucker = reader.float();
           break;
         case 31:
           message.mouthLeft = reader.float();
           break;
         case 32:
-          message.mouthLowerDown_L = reader.float();
-          break;
-        case 33:
-          message.mouthLowerDown_R = reader.float();
-          break;
-        case 34:
-          message.mouthPress_L = reader.float();
-          break;
-        case 35:
-          message.mouthPress_R = reader.float();
-          break;
-        case 36:
-          message.mouthPucker = reader.float();
-          break;
-        case 37:
           message.mouthRight = reader.float();
           break;
-        case 38:
-          message.mouthRollLower = reader.float();
-          break;
-        case 39:
+        case 33:
           message.mouthRollUpper = reader.float();
           break;
-        case 40:
-          message.mouthShrugLower = reader.float();
+        case 34:
+          message.mouthRollLower = reader.float();
           break;
-        case 41:
+        case 35:
           message.mouthShrugUpper = reader.float();
           break;
-        case 42:
+        case 36:
+          message.mouthShrugLower = reader.float();
+          break;
+        case 37:
+          message.mouthClose = reader.float();
+          break;
+        case 38:
           message.mouthSmile_L = reader.float();
           break;
-        case 43:
+        case 39:
           message.mouthSmile_R = reader.float();
           break;
+        case 40:
+          message.mouthFrown_L = reader.float();
+          break;
+        case 41:
+          message.mouthFrown_R = reader.float();
+          break;
+        case 42:
+          message.mouthDimple_L = reader.float();
+          break;
+        case 43:
+          message.mouthDimple_R = reader.float();
+          break;
         case 44:
-          message.mouthStretch_L = reader.float();
-          break;
-        case 45:
-          message.mouthStretch_R = reader.float();
-          break;
-        case 46:
           message.mouthUpperUp_L = reader.float();
           break;
-        case 47:
+        case 45:
           message.mouthUpperUp_R = reader.float();
           break;
+        case 46:
+          message.mouthLowerDown_L = reader.float();
+          break;
+        case 47:
+          message.mouthLowerDown_R = reader.float();
+          break;
         case 48:
-          message.noseSneer_L = reader.float();
+          message.mouthPress_L = reader.float();
           break;
         case 49:
-          message.noseSneer_R = reader.float();
+          message.mouthPress_R = reader.float();
           break;
         case 50:
-          message.cheekPuff = reader.float();
+          message.mouthStretch_L = reader.float();
           break;
         case 51:
-          message.jawForward = reader.float();
+          message.mouthStretch_R = reader.float();
           break;
         case 52:
           message.tongueOut = reader.float();
@@ -577,23 +586,17 @@ export const BlendShapes = {
 
   fromJSON(object: any): BlendShapes {
     return {
+      browInnerUp: isSet(object.browInnerUp) ? Number(object.browInnerUp) : 0,
       browDown_L: isSet(object.browDown_L) ? Number(object.browDown_L) : 0,
       browDown_R: isSet(object.browDown_R) ? Number(object.browDown_R) : 0,
-      browInnerUp: isSet(object.browInnerUp) ? Number(object.browInnerUp) : 0,
       browOuterUp_L: isSet(object.browOuterUp_L)
         ? Number(object.browOuterUp_L)
         : 0,
       browOuterUp_R: isSet(object.browOuterUp_R)
         ? Number(object.browOuterUp_R)
         : 0,
-      cheekSquint_L: isSet(object.cheekSquint_L)
-        ? Number(object.cheekSquint_L)
-        : 0,
-      cheekSquint_R: isSet(object.cheekSquint_R)
-        ? Number(object.cheekSquint_R)
-        : 0,
-      eyeBlink_L: isSet(object.eyeBlink_L) ? Number(object.eyeBlink_L) : 0,
-      eyeBlink_R: isSet(object.eyeBlink_R) ? Number(object.eyeBlink_R) : 0,
+      eyeLookUp_L: isSet(object.eyeLookUp_L) ? Number(object.eyeLookUp_L) : 0,
+      eyeLookUp_R: isSet(object.eyeLookUp_R) ? Number(object.eyeLookUp_R) : 0,
       eyeLookDown_L: isSet(object.eyeLookDown_L)
         ? Number(object.eyeLookDown_L)
         : 0,
@@ -608,21 +611,47 @@ export const BlendShapes = {
       eyeLookOut_R: isSet(object.eyeLookOut_R)
         ? Number(object.eyeLookOut_R)
         : 0,
-      eyeLookUp_L: isSet(object.eyeLookUp_L) ? Number(object.eyeLookUp_L) : 0,
-      eyeLookUp_R: isSet(object.eyeLookUp_R) ? Number(object.eyeLookUp_R) : 0,
+      eyeBlink_L: isSet(object.eyeBlink_L) ? Number(object.eyeBlink_L) : 0,
+      eyeBlink_R: isSet(object.eyeBlink_R) ? Number(object.eyeBlink_R) : 0,
       eyeSquint_L: isSet(object.eyeSquint_L) ? Number(object.eyeSquint_L) : 0,
       eyeSquint_R: isSet(object.eyeSquint_R) ? Number(object.eyeSquint_R) : 0,
       eyeWide_L: isSet(object.eyeWide_L) ? Number(object.eyeWide_L) : 0,
       eyeWide_R: isSet(object.eyeWide_R) ? Number(object.eyeWide_R) : 0,
-      jawLeft: isSet(object.jawLeft) ? Number(object.jawLeft) : 0,
-      jawOpen: isSet(object.jawOpen) ? Number(object.jawOpen) : 0,
-      jawRight: isSet(object.jawRight) ? Number(object.jawRight) : 0,
-      mouthClose: isSet(object.mouthClose) ? Number(object.mouthClose) : 0,
-      mouthDimple_L: isSet(object.mouthDimple_L)
-        ? Number(object.mouthDimple_L)
+      cheekPuff: isSet(object.cheekPuff) ? Number(object.cheekPuff) : 0,
+      cheekSquint_L: isSet(object.cheekSquint_L)
+        ? Number(object.cheekSquint_L)
         : 0,
-      mouthDimple_R: isSet(object.mouthDimple_R)
-        ? Number(object.mouthDimple_R)
+      cheekSquint_R: isSet(object.cheekSquint_R)
+        ? Number(object.cheekSquint_R)
+        : 0,
+      noseSneer_L: isSet(object.noseSneer_L) ? Number(object.noseSneer_L) : 0,
+      noseSneer_R: isSet(object.noseSneer_R) ? Number(object.noseSneer_R) : 0,
+      jawOpen: isSet(object.jawOpen) ? Number(object.jawOpen) : 0,
+      jawForward: isSet(object.jawForward) ? Number(object.jawForward) : 0,
+      jawLeft: isSet(object.jawLeft) ? Number(object.jawLeft) : 0,
+      jawRight: isSet(object.jawRight) ? Number(object.jawRight) : 0,
+      mouthFunnel: isSet(object.mouthFunnel) ? Number(object.mouthFunnel) : 0,
+      mouthPucker: isSet(object.mouthPucker) ? Number(object.mouthPucker) : 0,
+      mouthLeft: isSet(object.mouthLeft) ? Number(object.mouthLeft) : 0,
+      mouthRight: isSet(object.mouthRight) ? Number(object.mouthRight) : 0,
+      mouthRollUpper: isSet(object.mouthRollUpper)
+        ? Number(object.mouthRollUpper)
+        : 0,
+      mouthRollLower: isSet(object.mouthRollLower)
+        ? Number(object.mouthRollLower)
+        : 0,
+      mouthShrugUpper: isSet(object.mouthShrugUpper)
+        ? Number(object.mouthShrugUpper)
+        : 0,
+      mouthShrugLower: isSet(object.mouthShrugLower)
+        ? Number(object.mouthShrugLower)
+        : 0,
+      mouthClose: isSet(object.mouthClose) ? Number(object.mouthClose) : 0,
+      mouthSmile_L: isSet(object.mouthSmile_L)
+        ? Number(object.mouthSmile_L)
+        : 0,
+      mouthSmile_R: isSet(object.mouthSmile_R)
+        ? Number(object.mouthSmile_R)
         : 0,
       mouthFrown_L: isSet(object.mouthFrown_L)
         ? Number(object.mouthFrown_L)
@@ -630,8 +659,18 @@ export const BlendShapes = {
       mouthFrown_R: isSet(object.mouthFrown_R)
         ? Number(object.mouthFrown_R)
         : 0,
-      mouthFunnel: isSet(object.mouthFunnel) ? Number(object.mouthFunnel) : 0,
-      mouthLeft: isSet(object.mouthLeft) ? Number(object.mouthLeft) : 0,
+      mouthDimple_L: isSet(object.mouthDimple_L)
+        ? Number(object.mouthDimple_L)
+        : 0,
+      mouthDimple_R: isSet(object.mouthDimple_R)
+        ? Number(object.mouthDimple_R)
+        : 0,
+      mouthUpperUp_L: isSet(object.mouthUpperUp_L)
+        ? Number(object.mouthUpperUp_L)
+        : 0,
+      mouthUpperUp_R: isSet(object.mouthUpperUp_R)
+        ? Number(object.mouthUpperUp_R)
+        : 0,
       mouthLowerDown_L: isSet(object.mouthLowerDown_L)
         ? Number(object.mouthLowerDown_L)
         : 0,
@@ -644,62 +683,30 @@ export const BlendShapes = {
       mouthPress_R: isSet(object.mouthPress_R)
         ? Number(object.mouthPress_R)
         : 0,
-      mouthPucker: isSet(object.mouthPucker) ? Number(object.mouthPucker) : 0,
-      mouthRight: isSet(object.mouthRight) ? Number(object.mouthRight) : 0,
-      mouthRollLower: isSet(object.mouthRollLower)
-        ? Number(object.mouthRollLower)
-        : 0,
-      mouthRollUpper: isSet(object.mouthRollUpper)
-        ? Number(object.mouthRollUpper)
-        : 0,
-      mouthShrugLower: isSet(object.mouthShrugLower)
-        ? Number(object.mouthShrugLower)
-        : 0,
-      mouthShrugUpper: isSet(object.mouthShrugUpper)
-        ? Number(object.mouthShrugUpper)
-        : 0,
-      mouthSmile_L: isSet(object.mouthSmile_L)
-        ? Number(object.mouthSmile_L)
-        : 0,
-      mouthSmile_R: isSet(object.mouthSmile_R)
-        ? Number(object.mouthSmile_R)
-        : 0,
       mouthStretch_L: isSet(object.mouthStretch_L)
         ? Number(object.mouthStretch_L)
         : 0,
       mouthStretch_R: isSet(object.mouthStretch_R)
         ? Number(object.mouthStretch_R)
         : 0,
-      mouthUpperUp_L: isSet(object.mouthUpperUp_L)
-        ? Number(object.mouthUpperUp_L)
-        : 0,
-      mouthUpperUp_R: isSet(object.mouthUpperUp_R)
-        ? Number(object.mouthUpperUp_R)
-        : 0,
-      noseSneer_L: isSet(object.noseSneer_L) ? Number(object.noseSneer_L) : 0,
-      noseSneer_R: isSet(object.noseSneer_R) ? Number(object.noseSneer_R) : 0,
-      cheekPuff: isSet(object.cheekPuff) ? Number(object.cheekPuff) : 0,
-      jawForward: isSet(object.jawForward) ? Number(object.jawForward) : 0,
       tongueOut: isSet(object.tongueOut) ? Number(object.tongueOut) : 0,
     };
   },
 
   toJSON(message: BlendShapes): unknown {
     const obj: any = {};
-    message.browDown_L !== undefined && (obj.browDown_L = message.browDown_L);
-    message.browDown_R !== undefined && (obj.browDown_R = message.browDown_R);
     message.browInnerUp !== undefined &&
       (obj.browInnerUp = message.browInnerUp);
+    message.browDown_L !== undefined && (obj.browDown_L = message.browDown_L);
+    message.browDown_R !== undefined && (obj.browDown_R = message.browDown_R);
     message.browOuterUp_L !== undefined &&
       (obj.browOuterUp_L = message.browOuterUp_L);
     message.browOuterUp_R !== undefined &&
       (obj.browOuterUp_R = message.browOuterUp_R);
-    message.cheekSquint_L !== undefined &&
-      (obj.cheekSquint_L = message.cheekSquint_L);
-    message.cheekSquint_R !== undefined &&
-      (obj.cheekSquint_R = message.cheekSquint_R);
-    message.eyeBlink_L !== undefined && (obj.eyeBlink_L = message.eyeBlink_L);
-    message.eyeBlink_R !== undefined && (obj.eyeBlink_R = message.eyeBlink_R);
+    message.eyeLookUp_L !== undefined &&
+      (obj.eyeLookUp_L = message.eyeLookUp_L);
+    message.eyeLookUp_R !== undefined &&
+      (obj.eyeLookUp_R = message.eyeLookUp_R);
     message.eyeLookDown_L !== undefined &&
       (obj.eyeLookDown_L = message.eyeLookDown_L);
     message.eyeLookDown_R !== undefined &&
@@ -712,31 +719,58 @@ export const BlendShapes = {
       (obj.eyeLookOut_L = message.eyeLookOut_L);
     message.eyeLookOut_R !== undefined &&
       (obj.eyeLookOut_R = message.eyeLookOut_R);
-    message.eyeLookUp_L !== undefined &&
-      (obj.eyeLookUp_L = message.eyeLookUp_L);
-    message.eyeLookUp_R !== undefined &&
-      (obj.eyeLookUp_R = message.eyeLookUp_R);
+    message.eyeBlink_L !== undefined && (obj.eyeBlink_L = message.eyeBlink_L);
+    message.eyeBlink_R !== undefined && (obj.eyeBlink_R = message.eyeBlink_R);
     message.eyeSquint_L !== undefined &&
       (obj.eyeSquint_L = message.eyeSquint_L);
     message.eyeSquint_R !== undefined &&
       (obj.eyeSquint_R = message.eyeSquint_R);
     message.eyeWide_L !== undefined && (obj.eyeWide_L = message.eyeWide_L);
     message.eyeWide_R !== undefined && (obj.eyeWide_R = message.eyeWide_R);
-    message.jawLeft !== undefined && (obj.jawLeft = message.jawLeft);
+    message.cheekPuff !== undefined && (obj.cheekPuff = message.cheekPuff);
+    message.cheekSquint_L !== undefined &&
+      (obj.cheekSquint_L = message.cheekSquint_L);
+    message.cheekSquint_R !== undefined &&
+      (obj.cheekSquint_R = message.cheekSquint_R);
+    message.noseSneer_L !== undefined &&
+      (obj.noseSneer_L = message.noseSneer_L);
+    message.noseSneer_R !== undefined &&
+      (obj.noseSneer_R = message.noseSneer_R);
     message.jawOpen !== undefined && (obj.jawOpen = message.jawOpen);
+    message.jawForward !== undefined && (obj.jawForward = message.jawForward);
+    message.jawLeft !== undefined && (obj.jawLeft = message.jawLeft);
     message.jawRight !== undefined && (obj.jawRight = message.jawRight);
+    message.mouthFunnel !== undefined &&
+      (obj.mouthFunnel = message.mouthFunnel);
+    message.mouthPucker !== undefined &&
+      (obj.mouthPucker = message.mouthPucker);
+    message.mouthLeft !== undefined && (obj.mouthLeft = message.mouthLeft);
+    message.mouthRight !== undefined && (obj.mouthRight = message.mouthRight);
+    message.mouthRollUpper !== undefined &&
+      (obj.mouthRollUpper = message.mouthRollUpper);
+    message.mouthRollLower !== undefined &&
+      (obj.mouthRollLower = message.mouthRollLower);
+    message.mouthShrugUpper !== undefined &&
+      (obj.mouthShrugUpper = message.mouthShrugUpper);
+    message.mouthShrugLower !== undefined &&
+      (obj.mouthShrugLower = message.mouthShrugLower);
     message.mouthClose !== undefined && (obj.mouthClose = message.mouthClose);
-    message.mouthDimple_L !== undefined &&
-      (obj.mouthDimple_L = message.mouthDimple_L);
-    message.mouthDimple_R !== undefined &&
-      (obj.mouthDimple_R = message.mouthDimple_R);
+    message.mouthSmile_L !== undefined &&
+      (obj.mouthSmile_L = message.mouthSmile_L);
+    message.mouthSmile_R !== undefined &&
+      (obj.mouthSmile_R = message.mouthSmile_R);
     message.mouthFrown_L !== undefined &&
       (obj.mouthFrown_L = message.mouthFrown_L);
     message.mouthFrown_R !== undefined &&
       (obj.mouthFrown_R = message.mouthFrown_R);
-    message.mouthFunnel !== undefined &&
-      (obj.mouthFunnel = message.mouthFunnel);
-    message.mouthLeft !== undefined && (obj.mouthLeft = message.mouthLeft);
+    message.mouthDimple_L !== undefined &&
+      (obj.mouthDimple_L = message.mouthDimple_L);
+    message.mouthDimple_R !== undefined &&
+      (obj.mouthDimple_R = message.mouthDimple_R);
+    message.mouthUpperUp_L !== undefined &&
+      (obj.mouthUpperUp_L = message.mouthUpperUp_L);
+    message.mouthUpperUp_R !== undefined &&
+      (obj.mouthUpperUp_R = message.mouthUpperUp_R);
     message.mouthLowerDown_L !== undefined &&
       (obj.mouthLowerDown_L = message.mouthLowerDown_L);
     message.mouthLowerDown_R !== undefined &&
@@ -745,35 +779,10 @@ export const BlendShapes = {
       (obj.mouthPress_L = message.mouthPress_L);
     message.mouthPress_R !== undefined &&
       (obj.mouthPress_R = message.mouthPress_R);
-    message.mouthPucker !== undefined &&
-      (obj.mouthPucker = message.mouthPucker);
-    message.mouthRight !== undefined && (obj.mouthRight = message.mouthRight);
-    message.mouthRollLower !== undefined &&
-      (obj.mouthRollLower = message.mouthRollLower);
-    message.mouthRollUpper !== undefined &&
-      (obj.mouthRollUpper = message.mouthRollUpper);
-    message.mouthShrugLower !== undefined &&
-      (obj.mouthShrugLower = message.mouthShrugLower);
-    message.mouthShrugUpper !== undefined &&
-      (obj.mouthShrugUpper = message.mouthShrugUpper);
-    message.mouthSmile_L !== undefined &&
-      (obj.mouthSmile_L = message.mouthSmile_L);
-    message.mouthSmile_R !== undefined &&
-      (obj.mouthSmile_R = message.mouthSmile_R);
     message.mouthStretch_L !== undefined &&
       (obj.mouthStretch_L = message.mouthStretch_L);
     message.mouthStretch_R !== undefined &&
       (obj.mouthStretch_R = message.mouthStretch_R);
-    message.mouthUpperUp_L !== undefined &&
-      (obj.mouthUpperUp_L = message.mouthUpperUp_L);
-    message.mouthUpperUp_R !== undefined &&
-      (obj.mouthUpperUp_R = message.mouthUpperUp_R);
-    message.noseSneer_L !== undefined &&
-      (obj.noseSneer_L = message.noseSneer_L);
-    message.noseSneer_R !== undefined &&
-      (obj.noseSneer_R = message.noseSneer_R);
-    message.cheekPuff !== undefined && (obj.cheekPuff = message.cheekPuff);
-    message.jawForward !== undefined && (obj.jawForward = message.jawForward);
     message.tongueOut !== undefined && (obj.tongueOut = message.tongueOut);
     return obj;
   },
@@ -782,64 +791,64 @@ export const BlendShapes = {
     object: I
   ): BlendShapes {
     const message = createBaseBlendShapes();
+    message.browInnerUp = object.browInnerUp ?? 0;
     message.browDown_L = object.browDown_L ?? 0;
     message.browDown_R = object.browDown_R ?? 0;
-    message.browInnerUp = object.browInnerUp ?? 0;
     message.browOuterUp_L = object.browOuterUp_L ?? 0;
     message.browOuterUp_R = object.browOuterUp_R ?? 0;
-    message.cheekSquint_L = object.cheekSquint_L ?? 0;
-    message.cheekSquint_R = object.cheekSquint_R ?? 0;
-    message.eyeBlink_L = object.eyeBlink_L ?? 0;
-    message.eyeBlink_R = object.eyeBlink_R ?? 0;
+    message.eyeLookUp_L = object.eyeLookUp_L ?? 0;
+    message.eyeLookUp_R = object.eyeLookUp_R ?? 0;
     message.eyeLookDown_L = object.eyeLookDown_L ?? 0;
     message.eyeLookDown_R = object.eyeLookDown_R ?? 0;
     message.eyeLookIn_L = object.eyeLookIn_L ?? 0;
     message.eyeLookIn_R = object.eyeLookIn_R ?? 0;
     message.eyeLookOut_L = object.eyeLookOut_L ?? 0;
     message.eyeLookOut_R = object.eyeLookOut_R ?? 0;
-    message.eyeLookUp_L = object.eyeLookUp_L ?? 0;
-    message.eyeLookUp_R = object.eyeLookUp_R ?? 0;
+    message.eyeBlink_L = object.eyeBlink_L ?? 0;
+    message.eyeBlink_R = object.eyeBlink_R ?? 0;
     message.eyeSquint_L = object.eyeSquint_L ?? 0;
     message.eyeSquint_R = object.eyeSquint_R ?? 0;
     message.eyeWide_L = object.eyeWide_L ?? 0;
     message.eyeWide_R = object.eyeWide_R ?? 0;
-    message.jawLeft = object.jawLeft ?? 0;
+    message.cheekPuff = object.cheekPuff ?? 0;
+    message.cheekSquint_L = object.cheekSquint_L ?? 0;
+    message.cheekSquint_R = object.cheekSquint_R ?? 0;
+    message.noseSneer_L = object.noseSneer_L ?? 0;
+    message.noseSneer_R = object.noseSneer_R ?? 0;
     message.jawOpen = object.jawOpen ?? 0;
+    message.jawForward = object.jawForward ?? 0;
+    message.jawLeft = object.jawLeft ?? 0;
     message.jawRight = object.jawRight ?? 0;
+    message.mouthFunnel = object.mouthFunnel ?? 0;
+    message.mouthPucker = object.mouthPucker ?? 0;
+    message.mouthLeft = object.mouthLeft ?? 0;
+    message.mouthRight = object.mouthRight ?? 0;
+    message.mouthRollUpper = object.mouthRollUpper ?? 0;
+    message.mouthRollLower = object.mouthRollLower ?? 0;
+    message.mouthShrugUpper = object.mouthShrugUpper ?? 0;
+    message.mouthShrugLower = object.mouthShrugLower ?? 0;
     message.mouthClose = object.mouthClose ?? 0;
-    message.mouthDimple_L = object.mouthDimple_L ?? 0;
-    message.mouthDimple_R = object.mouthDimple_R ?? 0;
+    message.mouthSmile_L = object.mouthSmile_L ?? 0;
+    message.mouthSmile_R = object.mouthSmile_R ?? 0;
     message.mouthFrown_L = object.mouthFrown_L ?? 0;
     message.mouthFrown_R = object.mouthFrown_R ?? 0;
-    message.mouthFunnel = object.mouthFunnel ?? 0;
-    message.mouthLeft = object.mouthLeft ?? 0;
+    message.mouthDimple_L = object.mouthDimple_L ?? 0;
+    message.mouthDimple_R = object.mouthDimple_R ?? 0;
+    message.mouthUpperUp_L = object.mouthUpperUp_L ?? 0;
+    message.mouthUpperUp_R = object.mouthUpperUp_R ?? 0;
     message.mouthLowerDown_L = object.mouthLowerDown_L ?? 0;
     message.mouthLowerDown_R = object.mouthLowerDown_R ?? 0;
     message.mouthPress_L = object.mouthPress_L ?? 0;
     message.mouthPress_R = object.mouthPress_R ?? 0;
-    message.mouthPucker = object.mouthPucker ?? 0;
-    message.mouthRight = object.mouthRight ?? 0;
-    message.mouthRollLower = object.mouthRollLower ?? 0;
-    message.mouthRollUpper = object.mouthRollUpper ?? 0;
-    message.mouthShrugLower = object.mouthShrugLower ?? 0;
-    message.mouthShrugUpper = object.mouthShrugUpper ?? 0;
-    message.mouthSmile_L = object.mouthSmile_L ?? 0;
-    message.mouthSmile_R = object.mouthSmile_R ?? 0;
     message.mouthStretch_L = object.mouthStretch_L ?? 0;
     message.mouthStretch_R = object.mouthStretch_R ?? 0;
-    message.mouthUpperUp_L = object.mouthUpperUp_L ?? 0;
-    message.mouthUpperUp_R = object.mouthUpperUp_R ?? 0;
-    message.noseSneer_L = object.noseSneer_L ?? 0;
-    message.noseSneer_R = object.noseSneer_R ?? 0;
-    message.cheekPuff = object.cheekPuff ?? 0;
-    message.jawForward = object.jawForward ?? 0;
     message.tongueOut = object.tongueOut ?? 0;
     return message;
   },
 };
 
 function createBaseRotation(): Rotation {
-  return { pitch: undefined, roll: undefined, yaw: undefined };
+  return { pitch: undefined, yaw: undefined, roll: undefined };
 }
 
 export const Rotation = {
@@ -850,11 +859,11 @@ export const Rotation = {
     if (message.pitch !== undefined) {
       writer.uint32(13).float(message.pitch);
     }
-    if (message.roll !== undefined) {
-      writer.uint32(21).float(message.roll);
-    }
     if (message.yaw !== undefined) {
-      writer.uint32(29).float(message.yaw);
+      writer.uint32(21).float(message.yaw);
+    }
+    if (message.roll !== undefined) {
+      writer.uint32(29).float(message.roll);
     }
     return writer;
   },
@@ -870,10 +879,10 @@ export const Rotation = {
           message.pitch = reader.float();
           break;
         case 2:
-          message.roll = reader.float();
+          message.yaw = reader.float();
           break;
         case 3:
-          message.yaw = reader.float();
+          message.roll = reader.float();
           break;
         default:
           reader.skipType(tag & 7);
@@ -886,35 +895,35 @@ export const Rotation = {
   fromJSON(object: any): Rotation {
     return {
       pitch: isSet(object.pitch) ? Number(object.pitch) : undefined,
-      roll: isSet(object.roll) ? Number(object.roll) : undefined,
       yaw: isSet(object.yaw) ? Number(object.yaw) : undefined,
+      roll: isSet(object.roll) ? Number(object.roll) : undefined,
     };
   },
 
   toJSON(message: Rotation): unknown {
     const obj: any = {};
     message.pitch !== undefined && (obj.pitch = message.pitch);
-    message.roll !== undefined && (obj.roll = message.roll);
     message.yaw !== undefined && (obj.yaw = message.yaw);
+    message.roll !== undefined && (obj.roll = message.roll);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Rotation>, I>>(object: I): Rotation {
     const message = createBaseRotation();
     message.pitch = object.pitch ?? undefined;
-    message.roll = object.roll ?? undefined;
     message.yaw = object.yaw ?? undefined;
+    message.roll = object.roll ?? undefined;
     return message;
   },
 };
 
-function createBaseTransform(): Transform {
+function createBaseTranslation(): Translation {
   return { x: undefined, y: undefined, z: undefined };
 }
 
-export const Transform = {
+export const Translation = {
   encode(
-    message: Transform,
+    message: Translation,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.x !== undefined) {
@@ -929,10 +938,10 @@ export const Transform = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Transform {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Translation {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransform();
+    const message = createBaseTranslation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -953,7 +962,7 @@ export const Transform = {
     return message;
   },
 
-  fromJSON(object: any): Transform {
+  fromJSON(object: any): Translation {
     return {
       x: isSet(object.x) ? Number(object.x) : undefined,
       y: isSet(object.y) ? Number(object.y) : undefined,
@@ -961,7 +970,7 @@ export const Transform = {
     };
   },
 
-  toJSON(message: Transform): unknown {
+  toJSON(message: Translation): unknown {
     const obj: any = {};
     message.x !== undefined && (obj.x = message.x);
     message.y !== undefined && (obj.y = message.y);
@@ -969,10 +978,10 @@ export const Transform = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<Transform>, I>>(
+  fromPartial<I extends Exact<DeepPartial<Translation>, I>>(
     object: I
-  ): Transform {
-    const message = createBaseTransform();
+  ): Translation {
+    const message = createBaseTranslation();
     message.x = object.x ?? undefined;
     message.y = object.y ?? undefined;
     message.z = object.z ?? undefined;
