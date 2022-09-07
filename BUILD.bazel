@@ -5,16 +5,16 @@ load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
 load("@rules_proto_grpc//csharp:defs.bzl", "csharp_proto_compile")
 
 cpp_proto_library(
-    name = "avatar_message_proto_cc",
-    protos = [":avatar_message"]
+    name = "hallway_avatar_message_pb_cc",
+    protos = [":hallway_avatar_message"]
 )
 
 csharp_proto_compile(
-    name = "avatar_message_proto_cs",
-    protos = [":avatar_message"]
+    name = "hallway_avatar_message_pb_cs",
+    protos = [":hallway_avatar_message"]
 )
 
 proto_library(
-    name = "avatar_message",
-    srcs = ["avatar_message.proto"]
+    name = "hallway_avatar_message",
+    srcs = ["hallway_avatar_message.proto"]
 )

@@ -1,0 +1,76 @@
+// avatar.proto
+syntax = "proto3";
+
+message HallwayAvatarPrediction {
+    BlendShapes blendShapes = 1; 
+    Rotation rotation = 2;
+    Translation translation = 3;
+}
+
+message BlendShapes { 
+  // in osc streaming order https://www.bannaflak.com/face-cap/livemode.html#2.2
+  float  browInnerUp = 1;
+  float  browDown_L = 2;
+  float  browDown_R = 3;
+  float  browOuterUp_L = 4;
+  float  browOuterUp_R = 5;
+  float  eyeLookUp_L = 6;
+  float  eyeLookUp_R = 7;
+  float  eyeLookDown_L = 8;
+  float  eyeLookDown_R = 9;
+  float  eyeLookIn_L = 10;
+  float  eyeLookIn_R = 11;
+  float  eyeLookOut_L = 12;
+  float  eyeLookOut_R = 13;
+  float  eyeBlink_L = 14;
+  float  eyeBlink_R = 15;
+  float  eyeSquint_L = 16;
+  float  eyeSquint_R = 17;
+  float  eyeWide_L = 18;
+  float  eyeWide_R = 19;
+  float  cheekPuff = 20;
+  float  cheekSquint_L = 21;
+  float  cheekSquint_R = 22;
+  float  noseSneer_L = 23;
+  float  noseSneer_R = 24;
+  float  jawOpen = 25;
+  float  jawForward = 26;
+  float  jawLeft = 27;
+  float  jawRight = 28;
+  float  mouthFunnel = 29;
+  float  mouthPucker = 30;
+  float  mouthLeft = 31;
+  float  mouthRight = 32;
+  float  mouthRollUpper = 33;
+  float  mouthRollLower = 34;
+  float  mouthShrugUpper = 35;
+  float  mouthShrugLower = 36;
+  float  mouthClose = 37;
+  float  mouthSmile_L = 38;
+  float  mouthSmile_R = 39;
+  float  mouthFrown_L = 40;
+  float  mouthFrown_R = 41;
+  float  mouthDimple_L = 42;
+  float  mouthDimple_R = 43;
+  float  mouthUpperUp_L = 44;
+  float  mouthUpperUp_R = 45;
+  float  mouthLowerDown_L = 46;
+  float  mouthLowerDown_R = 47;
+  float  mouthPress_L = 48;
+  float  mouthPress_R = 49;
+  float  mouthStretch_L = 50;
+  float  mouthStretch_R = 51;
+  float  tongueOut = 52;
+}
+
+message Rotation { 
+  optional float pitch = 1; // x
+  optional float yaw   = 2; // y
+  optional float roll  = 3; // z
+}
+
+message Translation {
+  optional float x = 1;
+  optional float y = 2;
+  optional float z = 3;
+}

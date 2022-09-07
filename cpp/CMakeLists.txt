@@ -22,10 +22,15 @@ FetchContent_Declare(
   PREFIX "${CMAKE_BINARY_DIR}"
   SOURCE_DIR "${CMAKE_BINARY_DIR}/protobuf"
 )
-FetchContent_MakeAvailable(protobuf)
+# need to do this so that it doesn't try to install all the proto stuff we don't need
+FetchContent_GetProperties(protobuf) 
+if(NOT protobuf_POPULATED)
+  FetchContent_Populate(protobuf)
+  add_subdirectory(${protobuf_SOURCE_DIR} ${protobuf_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
 
-add_library(${LIB_NAME} STATIC  src/AvatarMessageUtils.cpp include/AvatarMessageUtils.h
-                                src/avatar_message.pb.cc include/avatar_message.pb.h)
+
+add_library(${LIB_NAME} STATIC src/hallway_avatar_message.pb.cc include/hallway_avatar_message.pb.h)
 
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${protobuf_SOURCE_DIR}/src)
 
