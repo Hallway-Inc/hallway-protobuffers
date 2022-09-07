@@ -29,8 +29,8 @@ if(NOT protobuf_POPULATED)
   add_subdirectory(${protobuf_SOURCE_DIR} ${protobuf_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-
-add_library(${LIB_NAME} STATIC src/hallway_avatar_message.pb.cc include/hallway_avatar_message.pb.h)
+option(AvatarMessageLib_SHARED_OR_STATIC "STATIC or SHARED" "SHARED")
+add_library(${LIB_NAME} ${AvatarMessageLib_SHARED_OR_STATIC} src/hallway_avatar_message.pb.cc include/hallway_avatar_message.pb.h)
 
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${protobuf_SOURCE_DIR}/src)
 
